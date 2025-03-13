@@ -11,7 +11,9 @@
  */
 Library::Library()
 {
-    head == nullptr;
+    head = new Book("","",0);
+    head->next == nullptr;
+    head->prev == nullptr;
 }
 
 /***************************************************************
@@ -24,14 +26,24 @@ Library::Library()
 void Library::addBook(string title,string author,int year)
 {
     Book* newBook = new Book(title,author,year);
-    Book* temp = head;
 
-    while (temp->next != nullptr)
+    if(isEmpty())
     {
-        temp = temp->next;
+        head->next = newBook;
+        newBook->prev = head;
     }
-    temp->next = newBook;
-    newBook->prev = temp;
+    else
+    {
+        Book* temp = head->next;
+
+        while (temp->next != nullptr)
+        {
+            temp = temp->next;
+        }
+        temp->next = newBook;
+        newBook->prev = temp;
+    }
+
 }
    
 
@@ -44,7 +56,7 @@ void Library::addBook(string title,string author,int year)
  */
 void Library::deleteBook(string title)
 {
-    if(head == nullptr)
+    if(isEmpty())
     std::cout << "Library is empty!" << std::endl;
     return;
 
@@ -53,35 +65,63 @@ void Library::deleteBook(string title)
     {
         temp = temp->next;
     }
+
     if(temp == nullptr) 
-    std::cout << "Book not found!" << std::endl;
-    return;
-  
-    temp->prev->next = temp->next;
+    {
+        std::cout << "Book not found!" << std::endl;
+        return;
+    }
+
+    if(temp->prev != nullptr)
+    {
+        temp->prev->next = temp->next;
+    }
 
     if(temp->next != nullptr)
     {
     temp->next->prev = temp->prev;
     }
+
+    if (head->next == temp)
+    {
+        head->next = temp->next;
+    }
+    
     delete temp;
+    std::cout << "Book deleted!" << std::endl;
+
+    
 }
+
+
 /***************************************************************
  * Method displays all the books stored in the library.
  * 
  */
 void Library::displayBook()
 {
-    if(head->next = nullptr)
-    std::cout << "Your Library is empty." << std::endl;
-    return;
-    
+    if(isEmpty())
+    {
+        std::cout << "Your Library is empty." << std::endl;
+        return;
+    }
+
     Book* temp = head->next;
+    std::cout << "Here is your current library! \n " << std::endl;
     while(temp != nullptr)
     {
         std::cout << "Title: " << temp->title << " Author: " << temp->author << " Year: " << temp-> year << std::endl;
         temp = temp->next;
     }
+    std::cout << "\n";
 }
 
+/***************************************************************
+ * 
+ */
+bool Library::isEmpty()
+{
+     return head -> next == nullptr;
+}
 
 #endif

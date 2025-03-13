@@ -27,6 +27,7 @@ class Library
     void addBook(string title,string author,int year);
     void displayBook();
     void deleteBook(string title);
+    bool isEmpty();
 };
 
 #endif

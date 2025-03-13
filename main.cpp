@@ -19,10 +19,10 @@ int main()
         cout << "2. Delete a book from my library. " << endl;
         cout << "3. View my library. " << endl;
         cout << "4. Exit the program. " << endl;
-        cout << "Enter your choice. " << endl;
+        cout << "Enter your choice: ";
         cin >> choice;
 
-        cin.ignore();
+       
 
 
         if (cin.fail()) {
@@ -32,6 +32,8 @@ int main()
             continue;
         }
 
+        cin.ignore();
+
         if(choice == 1)
         {
             string title, author;
@@ -39,7 +41,6 @@ int main()
 
             
             cout << "What is the title of the book you would like to add? " << endl;
-            cin.ignore();
             getline(cin, title);
 
             cout << "What is the authors name? " << endl;
@@ -47,7 +48,14 @@ int main()
 
             cout << "What is the year the book was published? " << endl;
             cin >> year;
-            cin.ignore();
+
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(1000, '\n');
+                cout << "Invalid input. Please enter a number." << endl;
+                continue;
+            }
+            
 
             myLibrary.addBook(title,author,year); 
             cout << "Book added!" << endl;   
@@ -57,15 +65,15 @@ int main()
             string title;
             
             cout << "What is the title of the book you would like to delete? " << endl;
-            cin.ignore();
+            
             getline(cin, title);
 
             myLibrary.deleteBook(title);
-            cout << "Book deleted!" << endl;
+            
         }
         else if (choice == 3)
         {
-            cout << "Here is your current library! " << endl;
+            
             myLibrary.displayBook();
         }
         else if (choice == 4)
